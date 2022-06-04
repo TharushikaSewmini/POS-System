@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="936.0" prefWidth="1339.0" style="-fx-background-color: white;" stylesheets="@assests/styles/ManageOrder-Form.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.pos.controller.ManageOrderFormController">
+   <children>
+      <Label layoutX="314.0" layoutY="29.0" text="Select Customer">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="txtCustomerId" layoutX="640.0" layoutY="29.0" prefHeight="31.0" prefWidth="218.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXTextField>
+      <AnchorPane prefHeight="936.0" prefWidth="251.0" style="-fx-background-color: white; -fx-border-color: #34495e; -fx-border-width: 2;">
+         <children>
+            <ListView fx:id="lstOrderIds" layoutX="5.0" layoutY="75.0" prefHeight="284.0" prefWidth="241.0" />
+            <Label layoutX="69.0" layoutY="34.0" text="Order No">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <JFXButton fx:id="btnSearchOrder" buttonType="RAISED" layoutX="482.0" layoutY="108.0" prefHeight="40.0" prefWidth="158.0" style="-fx-background-color: #95a5a6; -fx-background-radius: 4;" text="Search Orders" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></JFXButton>
+      <JFXTextField fx:id="txtItemCode" labelFloat="true" layoutX="308.0" layoutY="227.0" prefHeight="39.0" prefWidth="158.0" promptText="ItemCode">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="txtDescription" labelFloat="true" layoutX="567.0" layoutY="226.0" prefHeight="39.0" prefWidth="251.0" promptText="Description">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="txtUnitPrice" labelFloat="true" layoutX="915.0" layoutY="223.0" prefHeight="42.0" prefWidth="158.0" promptText="Unit Price">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="txtQty" labelFloat="true" layoutX="1149.0" layoutY="223.0" prefHeight="42.0" prefWidth="129.0" promptText="Qty">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXTextField>
+      <JFXButton fx:id="btnUpdate" buttonType="RAISED" layoutX="1113.0" layoutY="311.0" onAction="#addToListOnAction" prefHeight="42.0" prefWidth="167.0" style="-fx-background-color: #3498db; -fx-background-radius: 4;" text="Edit Order" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <TableView fx:id="tblOrderDetails" layoutX="304.0" layoutY="379.0" prefHeight="295.0" prefWidth="984.0">
+         <columns>
+            <TableColumn fx:id="colCode" prefWidth="150.0" text="Item Code" />
+            <TableColumn fx:id="colDescription" prefWidth="292.0" text="Description" />
+            <TableColumn fx:id="colUnitPrice" prefWidth="194.0" text="Unit Price" />
+            <TableColumn fx:id="colQty" prefWidth="169.0" text="Order Qty" />
+            <TableColumn fx:id="colOption" prefWidth="178.0" text="Option" />
+         </columns>
+      </TableView>
+      <Label layoutX="322.0" layoutY="700.0" text="Total Discount :" textFill="#830000">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTotalDiscount" layoutX="513.0" layoutY="700.0" text="0" textFill="#830000">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="326.0" layoutY="744.0" text="Total :" textFill="#830000">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTotalCost" layoutX="413.0" layoutY="744.0" text="0" textFill="#830000">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnConfirmOrderEdits" buttonType="RAISED" layoutX="1057.0" layoutY="823.0" onAction="#confirmOrderEditsOnAction" prefHeight="51.0" prefWidth="184.0" style="-fx-background-color: #2ecc71; -fx-background-radius: 8;" text="Confirm Edits" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnCancelOrder" buttonType="RAISED" layoutX="439.0" layoutY="823.0" onAction="#cancelOrderOnAction" prefHeight="51.0" prefWidth="158.0" style="-fx-background-color: #FF6347; -fx-background-radius: 8;" text="Cancel" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>

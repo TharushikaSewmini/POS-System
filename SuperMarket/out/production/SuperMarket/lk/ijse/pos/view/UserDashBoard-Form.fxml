@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="991.0" prefWidth="1339.0" stylesheets="@assests/styles/UserDashBoard-Form.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.pos.controller.UserDashBoardFormController">
+   <children>
+      <AnchorPane fx:id="contextRoot" layoutY="55.0" prefHeight="936.0" prefWidth="1339.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="46.0" layoutY="88.0" text="User DashBoard" textFill="#197172">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="503.0" layoutY="43.0" text="Super Market">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Separator layoutX="22.0" layoutY="132.0" prefHeight="1.0" prefWidth="1287.0" />
+            <Label fx:id="lblMenu" alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="501.0" prefHeight="45.0" prefWidth="1324.0" text="Welcome" textFill="#444d59">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="imgPlaceOrder" fitHeight="114.0" fitWidth="117.0" layoutX="377.0" layoutY="260.0" onMouseClicked="#navigate" onMouseEntered="#playMouseEnterAnimation" onMouseExited="#playMouseExitAnimation" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assests/images/coins.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="imgManageOrder" fitHeight="114.0" fitWidth="117.0" layoutX="873.0" layoutY="254.0" onMouseClicked="#navigate" onMouseEntered="#playMouseEnterAnimation" onMouseExited="#playMouseExitAnimation" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assests/images/contract.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Label fx:id="lblDescription" alignment="CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="559.0" prefHeight="25.0" prefWidth="1324.0" text="Please select one of above main operations to proceed" textFill="#444d59">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="55.0" prefWidth="1339.0" style="-fx-background-color: #bdc3c7;">
+         <children>
+            <Label fx:id="lblDate" layoutX="36.0" layoutY="16.0" text="2022-10-12" textFill="#2c3e50">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTime" layoutX="217.0" layoutY="16.0" text="10: 20: 35" textFill="#2c3e50">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <ImageView id="imgHome" fitHeight="45.0" fitWidth="49.0" layoutX="1153.0" layoutY="4.0" onMouseClicked="#backToHome" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assests/images/house.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView id="imgLogout" fitHeight="45.0" fitWidth="45.0" layoutX="1253.0" layoutY="4.0" onMouseClicked="#logout" pickOnBounds="true">
+               <image>
+                  <Image url="@assests/images/log-out.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
