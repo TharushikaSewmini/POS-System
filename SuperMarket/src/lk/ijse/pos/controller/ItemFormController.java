@@ -5,21 +5,14 @@ import lk.ijse.pos.bo.custom.ItemBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import lk.ijse.pos.dto.ItemDTO;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import lk.ijse.pos.view.tm.ItemTM;
 
-import java.io.IOException;
-import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -108,16 +101,6 @@ public class ItemFormController {
         txtCode.setEditable(false);
         btnSaveItem.setDisable(true);
         btnDeleteItem.setDisable(true);
-    }
-
-    public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
-        URL resource = this.getClass().getResource("/lk/ijse/pos/view/AdministratorDashBoard-Form.fxml");
-        Parent root = FXMLLoader.load(resource);
-        Scene scene = new Scene(root);
-        Stage primaryStage = (Stage) (this.root.getScene().getWindow());
-        primaryStage.setScene(scene);
-        primaryStage.centerOnScreen();
-        Platform.runLater(() -> primaryStage.sizeToScene());
     }
 
     public void addNewItemOnAction(ActionEvent actionEvent) {

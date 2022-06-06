@@ -18,4 +18,8 @@ public interface ItemBO extends SuperBO {
     boolean deleteItem(String code) throws SQLException, ClassNotFoundException;
 
     String generateNewItemId() throws SQLException, ClassNotFoundException;
+
+    ArrayList<ItemDTO> getMostMovableItems() throws SQLException, ClassNotFoundException;
+
+    ArrayList<ItemDTO> getLeastMovableItems() throws SQLException, ClassNotFoundException;
 }

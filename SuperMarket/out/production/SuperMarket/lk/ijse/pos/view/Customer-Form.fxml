@@ -71,7 +71,7 @@
             <Font name="System Bold" size="31.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btnAddNewCustomer" buttonType="RAISED" layoutX="1061.0" layoutY="54.0" onAction="#addNewcustomerOnAction" prefHeight="44.0" prefWidth="194.0" style="-fx-background-color: #9b59b6; -fx-background-radius: 6;" text="+New Customer" textFill="WHITE">
+      <JFXButton fx:id="btnAddNewCustomer" buttonType="RAISED" layoutX="1061.0" layoutY="54.0" onAction="#addNewCustomerOnAction" prefHeight="44.0" prefWidth="194.0" style="-fx-background-color: #9b59b6; -fx-background-radius: 6;" text="+New Customer" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>

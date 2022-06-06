@@ -25,13 +25,13 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="txtUserName" layoutX="707.0" layoutY="206.0" prefHeight="45.0" prefWidth="329.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 1.3; -fx-border-color: #94AEAF;" />
+            <TextField fx:id="txtUserName" layoutX="707.0" layoutY="206.0" onKeyReleased="#textFields_Key_Released" prefHeight="45.0" prefWidth="329.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 1.3; -fx-border-color: #94AEAF;" />
             <Label layoutX="707.0" layoutY="299.0" text="Password" textFill="#006066">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <PasswordField fx:id="txtPassword" layoutX="707.0" layoutY="330.0" prefHeight="45.0" prefWidth="329.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 1.3; -fx-border-color: #94AEAF;" />
+            <PasswordField fx:id="pwdPassword" layoutX="707.0" layoutY="330.0" onKeyReleased="#textFields_Key_Released" prefHeight="45.0" prefWidth="329.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 1.3; -fx-border-color: #94AEAF;" />
             <Label layoutX="833.0" layoutY="425.0" text="Login As" textFill="#426d53">
                <font>
                   <Font name="System Bold" size="20.0" />

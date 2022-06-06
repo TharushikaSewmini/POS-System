@@ -5,22 +5,15 @@ import lk.ijse.pos.bo.custom.CustomerBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import lk.ijse.pos.dto.CustomerDTO;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import lk.ijse.pos.view.tm.CustomerTM;
 
-import java.io.IOException;
-import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -49,7 +42,7 @@ public class CustomerFormController {
     private final CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     public void initialize() {
-        colId.setCellValueFactory(new PropertyValueFactory<>("custId"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("custID"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("custTitle"));
         colName.setCellValueFactory(new PropertyValueFactory<>("custName"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("custAddress"));
@@ -88,6 +81,23 @@ public class CustomerFormController {
 
     }
 
+    private void loadAllCustomers() {
+        tblCustomer.getItems().clear();
+        /*Get all customers*/
+        try {
+            ArrayList<CustomerDTO> allCustomers = customerBO.getAllCustomers();
+
+            for (CustomerDTO customer : allCustomers) {
+                tblCustomer.getItems().add(new CustomerTM(customer.getCustID(), customer.getCustTitle(), customer.getCustName(), customer.getCustAddress(), customer.getCity(), customer.getProvince(), customer.getPostalCode()));
+            }
+
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+    }
+
     private void initUI() {
         txtCustomerId.clear();
         txtCustomerTitle.clear();
@@ -108,7 +118,7 @@ public class CustomerFormController {
         btnDeleteCustomer.setDisable(true);
     }
 
-    public void addNewcustomerOnAction(ActionEvent actionEvent) {
+    public void addNewCustomerOnAction(ActionEvent actionEvent) {
         txtCustomerId.setDisable(false);
         txtCustomerTitle.setDisable(false);
         txtCustomerName.setDisable(false);
@@ -128,25 +138,6 @@ public class CustomerFormController {
         btnSaveCustomer.setDisable(false);
         btnSaveCustomer.setText("Save");
         tblCustomer.getSelectionModel().clearSelection();
-    }
-
-    private void loadAllCustomers() {
-        tblCustomer.getItems().clear();
-        /*Get all customers*/
-        try {
-            ArrayList<CustomerDTO> allCustomers = customerBO.getAllCustomers();
-
-            for (CustomerDTO customer : allCustomers) {
-                tblCustomer.getItems().add(new CustomerTM(customer.getCustID(), customer.getCustTitle(), customer.getCustName(), customer.getCustAddress(), customer.getCity(), customer.getProvince(), customer.getPostalCode()));
-            }
-
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        } catch (ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
-
-
     }
 
     public void textFieldsKeyReleased(KeyEvent keyEvent) {
@@ -169,19 +160,19 @@ public class CustomerFormController {
             new Alert(Alert.AlertType.ERROR, "Name should be at least 3 characters long").show();
             txtCustomerName.requestFocus();
             return;
-        } else if (!custAddress.matches(".{3,}")) {
+        } else if (!custAddress.matches("[A-Za-z ]+")) {
             new Alert(Alert.AlertType.ERROR, "Address should be at least 3 characters long").show();
             txtCustomerAddress.requestFocus();
             return;
-        } else if (!city.matches(".{3,}")) {
+        } else if (!city.matches("[A-Za-z ]+")) {
             new Alert(Alert.AlertType.ERROR, "City should be at least 3 characters long").show();
             txtCity.requestFocus();
             return;
-        } else if (!province.matches(".{3,}")) {
+        } else if (!province.matches("[A-Za-z ]+")) {
             new Alert(Alert.AlertType.ERROR, "Province should be at least 3 characters long").show();
             txtProvince.requestFocus();
             return;
-        } else if (!postalCode.matches(".{3,}")) {
+        } else if (!postalCode.matches("[A-Za-z ]+")) {
             new Alert(Alert.AlertType.ERROR, "PostalCode should be at least 3 characters long").show();
             txtPostalCode.requestFocus();
             return;
@@ -262,18 +253,7 @@ public class CustomerFormController {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
         return "C001";
     }
 
-
-    public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
-        URL resource = this.getClass().getResource("/lk/ijse/pos/view/UserDashBoard-Form.fxml");
-        Parent root = FXMLLoader.load(resource);
-        Scene scene = new Scene(root);
-        Stage primaryStage = (Stage) (this.root.getScene().getWindow());
-        primaryStage.setScene(scene);
-        primaryStage.centerOnScreen();
-        Platform.runLater(() -> primaryStage.sizeToScene());
-    }
 }

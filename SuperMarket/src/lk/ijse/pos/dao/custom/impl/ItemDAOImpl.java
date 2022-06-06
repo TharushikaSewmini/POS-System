@@ -60,4 +60,24 @@ public class ItemDAOImpl implements ItemDAO {
         }
     }
 
+    @Override
+    public ArrayList<Item> getMostMovableItems() throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.executeQuery("SELECT * FROM Item ORDER BY qtyOnHand ASC");
+        ArrayList<Item> allItems = new ArrayList<>();
+        while (rst.next()) {
+            allItems.add(new Item(rst.getString(1), rst.getString(2), rst.getString(3), rst.getDouble(4), rst.getInt(5)));
+        }
+        return allItems;
+    }
+
+    @Override
+    public ArrayList<Item> getLeastMovableItems() throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.executeQuery("SELECT * FROM Item ORDER BY qtyOnHand DESC");
+        ArrayList<Item> allItems = new ArrayList<>();
+        while (rst.next()) {
+            allItems.add(new Item(rst.getString(1), rst.getString(2), rst.getString(3), rst.getDouble(4), rst.getInt(5)));
+        }
+        return allItems;
+    }
+
 }

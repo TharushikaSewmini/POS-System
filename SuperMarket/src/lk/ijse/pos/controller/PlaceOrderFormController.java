@@ -1,5 +1,7 @@
 package lk.ijse.pos.controller;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.PlaceOrderBO;
 import com.jfoenix.controls.JFXButton;
@@ -19,6 +21,7 @@ import lk.ijse.pos.dto.CustomerDTO;
 import lk.ijse.pos.dto.ItemDTO;
 import lk.ijse.pos.dto.OrderDetailDTO;
 import javafx.stage.Stage;
+import lk.ijse.pos.util.ValidationUtil;
 import lk.ijse.pos.view.tm.OrderDetailTM;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -32,10 +35,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class PlaceOrderFormController {
@@ -61,21 +62,21 @@ public class PlaceOrderFormController {
     public Label lblTotalCost;
     public JFXButton btnCancelOrder;
     public JFXButton btnConfirmOrder;
+    public TextField txtExchangeCost;
+    public JFXTextField txtCash;
+    public JFXButton btnPrint;
+
+    String orderId;
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap<>();
 
     // Property Injection(DI)
     private final PlaceOrderBO placeOrderBO = (PlaceOrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PURCHASE_ORDER);
-    public TextField txtExchangeCost;
-    public JFXTextField txtCash;
-    public JFXButton btnPay;
-
-    String orderId;
 
     public void initialize() {
         tblOrder.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("itemCode"));
         tblOrder.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("orderQty"));
         tblOrder.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("discount"));
         tblOrder.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("total"));
-        //colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
         TableColumn<OrderDetailTM, Button> lastCol = (TableColumn<OrderDetailTM, Button>) tblOrder.getColumns().get(4);
 
         lastCol.setCellValueFactory(param -> {
@@ -91,6 +92,15 @@ public class PlaceOrderFormController {
 
             return new ReadOnlyObjectWrapper<>(btnDelete);
         });
+
+        Pattern qtyPattern = Pattern.compile("^[0-9]{1,}$");
+        Pattern discountPattern = Pattern.compile("^[1-9][0-9]*(.[0-9]{2})?$");
+        Pattern costPattern = Pattern.compile("^[1-9][0-9]*(.[0-9]{2})?$");;
+
+        map.put(txtQty, qtyPattern);
+        map.put(txtDiscount, discountPattern);
+        map.put(txtCash, costPattern);
+
 
         orderId = generateNewOrderId();
         lblOrderId.setText(orderId);
@@ -205,6 +215,28 @@ public class PlaceOrderFormController {
         loadAllItemCodes();
     }
 
+    public void textFieldsKeyReleased(KeyEvent keyEvent) throws IOException {
+        ValidationUtil.validate(map);
+        //TextField = error
+        //boolean // validation ok
+
+        //if the enter key pressed
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            Object response =  ValidationUtil.validate(map);
+            //if the response is a text field
+            //that means there is a error
+            if (response instanceof TextField) {
+                TextField textField = (TextField) response;
+                textField.requestFocus();// if there is a error just focus it
+            }
+        }
+    }
+
+    public void setBorders(TextField... textFields){
+        for (TextField textField : textFields) {
+            textField.setStyle("-fx-border-color:white");
+        }
+    }
     private boolean existItem(String itemCode) throws SQLException, ClassNotFoundException {
         return placeOrderBO.checkItemIsAvailable(itemCode);
     }
@@ -299,6 +331,7 @@ public class PlaceOrderFormController {
             tblOrder.getItems().add(new OrderDetailTM(itemCode, qty, discount, total));
         }
 
+        setBorders(txtDiscount,txtQty);
         cmbItemCode.getSelectionModel().clearSelection();
         cmbItemCode.requestFocus();
         calculateDiscountTotal();
@@ -345,39 +378,6 @@ public class PlaceOrderFormController {
             new Alert(Alert.AlertType.ERROR, "Order has not been placed successfully").show();
         }
 
-        orderId = generateNewOrderId();
-        lblOrderId.setText(orderId);
-        cmbCustomerId.getSelectionModel().clearSelection();
-        cmbItemCode.getSelectionModel().clearSelection();
-        tblOrder.getItems().clear();
-        txtQty.clear();
-        txtDiscount.clear();
-        calculateDiscountTotal();
-        calculateTotal();
-
-
-        //print report
-        String customerID = cmbCustomerId.getValue();
-        String orderId = lblOrderId.getText();
-        double total = Double.parseDouble(lblTotalCost.getText());
-
-        HashMap paramMap = new HashMap();
-        paramMap.put("customerID", customerID);// id = report param name // customerID = UI typed value
-        paramMap.put("orderID", orderId);
-        paramMap.put("total", total);
-
-        // get values from CartTM
-        ObservableList<OrderDetailTM> tableRecords = tblOrder.getItems(); // bean collection
-
-        try {
-            JasperReport compiledReport = (JasperReport) JRLoader.loadObject(this.getClass().getResource("/lk/ijse/pos/view/reports/CustomerInvoice.jasper"));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(compiledReport, paramMap, new JRBeanCollectionDataSource(tableRecords));
-            JasperViewer.viewReport(jasperPrint, false);
-
-        } catch (JRException e) {
-            e.printStackTrace();
-        }
-
     }
     public boolean saveOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) {
         try {
@@ -416,4 +416,42 @@ public class PlaceOrderFormController {
         txtExchangeCost.setText(String.valueOf(exchangeCost));
     }
 
+    public void printOnAction(ActionEvent actionEvent) {
+        String customerID = cmbCustomerId.getValue();
+        String orderId = lblOrderId.getText();
+        double total = Double.parseDouble(lblTotalCost.getText());
+        double cash = Double.parseDouble(txtCash.getText());
+        double exchangeCost = Double.parseDouble(txtExchangeCost.getText());
+
+        HashMap paramMap = new HashMap();
+        paramMap.put("customerID", customerID);
+        paramMap.put("orderId", orderId);
+        paramMap.put("total", total);
+        paramMap.put("cash", cash);
+        paramMap.put("exchangeCost", exchangeCost);
+
+        // get values from OrderDetailTM
+        ObservableList<OrderDetailTM> tableRecords = tblOrder.getItems(); // bean collection
+
+        try {
+            JasperReport compiledReport = (JasperReport) JRLoader.loadObject(this.getClass().getResource("/lk/ijse/pos/view/reports/CustomerBill.jasper"));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(compiledReport, paramMap, new JRBeanCollectionDataSource(tableRecords));
+            JasperViewer.viewReport(jasperPrint, false);
+
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+
+        orderId = generateNewOrderId();
+        lblOrderId.setText(orderId);
+        cmbCustomerId.getSelectionModel().clearSelection();
+        cmbItemCode.getSelectionModel().clearSelection();
+        tblOrder.getItems().clear();
+        txtQty.clear();
+        txtDiscount.clear();
+        txtCash.clear();
+        txtExchangeCost.clear();
+        calculateDiscountTotal();
+        calculateTotal();
+    }
 }

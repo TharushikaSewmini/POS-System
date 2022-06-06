@@ -2,6 +2,7 @@ package lk.ijse.pos.dto;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class CustomDTO {
     private String custID;
@@ -56,6 +57,13 @@ public class CustomDTO {
         this.orderId = orderId;
         this.orderQty = orderQty;
         this.discount = discount;
+    }
+
+    public CustomDTO(int orderQty) {
+        this.orderQty = orderQty;
+    }
+
+    public CustomDTO(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) {
     }
 
     public String getCustID() {

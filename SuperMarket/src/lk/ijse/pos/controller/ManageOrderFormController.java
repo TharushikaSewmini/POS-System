@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.pos.dto.CustomDTO;
-import lk.ijse.pos.dto.ItemDTO;
 import lk.ijse.pos.dto.OrderDTO;
 import lk.ijse.pos.dto.OrderDetailDTO;
 import lk.ijse.pos.view.tm.CustomTM;
@@ -41,6 +40,9 @@ public class ManageOrderFormController {
     public Label lblTotalCost;
     public JFXButton btnCancelOrder;
 
+    double discount;
+    double total;
+
     // Property Injection(DI)
     private final PlaceOrderBO placeOrderBO = (PlaceOrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PURCHASE_ORDER);
 
@@ -59,6 +61,7 @@ public class ManageOrderFormController {
                 tblOrderDetails.getSelectionModel().clearSelection();
                 calculateDiscountTotal();
                 calculateTotal();
+                lstOrderIds.setDisable(false);
                 enableOrDisableConfirmOrderEditButton();
             });
 
@@ -78,6 +81,7 @@ public class ManageOrderFormController {
         tblOrderDetails.getSelectionModel().clearSelection();
 
         btnSearchOrder.setOnMouseClicked(event -> {
+            lstOrderIds.getItems().clear();
             if (txtCustomerId.getText() != null) {
                 try {
                     /*Search Order*/
@@ -235,7 +239,7 @@ public class ManageOrderFormController {
 
     public void confirmOrderEditsOnAction(ActionEvent actionEvent) {
         boolean b = updateOrder(lstOrderIds.getSelectionModel().selectedItemProperty().getValue(), LocalDate.now(), txtCustomerId.getText(),
-                tblOrderDetails.getItems().stream().map(tm -> new OrderDetailDTO(tm.getOrderId(), tm.getItemCode(), tm.getOrderQty(), tm.getDiscount())).collect(Collectors.toList()));
+                tblOrderDetails.getItems().stream().map(tm -> new OrderDetailDTO(tm.getItemCode(),tm.getOrderQty(),tm.getDiscount())).collect(Collectors.toList()));
 
         if (b) {
             new Alert(Alert.AlertType.INFORMATION, "Order has been placed successfully").show();
@@ -267,26 +271,9 @@ public class ManageOrderFormController {
         return  false;
     }
 
-    public ItemDTO findItem(String itemCode) {
-        try {
-            Connection connection = DBConnection.getDbConnection().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE itemCode=?");
-            pstm.setString(1, itemCode);
-            ResultSet rst = pstm.executeQuery();
-            rst.next();
-
-            return new ItemDTO(itemCode, rst.getString("description"), rst.getString("packSize"), rst.getDouble("unitPrice"), rst.getInt("qtyOnHand"));
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to find the Item " + itemCode, e);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public void cancelOrderOnAction(ActionEvent actionEvent) {
         txtCustomerId.clear();
-        lstOrderIds.getSelectionModel().clearSelection();
+        lstOrderIds.getItems().clear();
         tblOrderDetails.getItems().clear();
         txtItemCode.clear();
         txtDescription.clear();

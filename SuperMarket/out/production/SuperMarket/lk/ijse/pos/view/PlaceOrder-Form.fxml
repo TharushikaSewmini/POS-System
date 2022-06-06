@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="936.0" prefWidth="1339.0" stylesheets="@assests/styles/PlaceOrder-Form.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.pos.controller.PlaceOrderFormController">
    <children>
-      <JFXButton layoutX="1061.0" layoutY="19.0" onAction="#newCustomerOnAction" prefHeight="51.0" prefWidth="184.0" style="-fx-background-color: #9b59b6; -fx-background-radius: 8;" text="+New Customer" textFill="WHITE">
+      <JFXButton layoutX="1061.0" layoutY="19.0" onAction="#newCustomerOnAction" prefHeight="51.0" prefWidth="184.0" style="-fx-background-color: #9b59b6; -fx-background-radius: 4;" text="+New Customer" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -64,12 +64,12 @@
             <Font size="16.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="txtQty" labelFloat="true" layoutX="589.0" layoutY="256.0" prefHeight="35.0" prefWidth="129.0" promptText="Qty">
+      <JFXTextField fx:id="txtQty" labelFloat="true" layoutX="589.0" layoutY="256.0" onKeyReleased="#textFieldsKeyReleased" prefHeight="35.0" prefWidth="129.0" promptText="Qty">
          <font>
             <Font size="16.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="txtDiscount" labelFloat="true" layoutX="312.0" layoutY="256.0" prefHeight="37.0" prefWidth="129.0" promptText="Discount">
+      <JFXTextField fx:id="txtDiscount" labelFloat="true" layoutX="312.0" layoutY="256.0" onKeyReleased="#textFieldsKeyReleased" prefHeight="37.0" prefWidth="129.0" promptText="Discount">
          <font>
             <Font size="16.0" />
          </font>
@@ -98,7 +98,7 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btnConfirmOrder" buttonType="RAISED" layoutX="933.0" layoutY="811.0" onAction="#confirmOrderOnAction" prefHeight="51.0" prefWidth="197.0" style="-fx-background-color: #2ecc71; -fx-background-radius: 6;" text="Confirm Order" textFill="WHITE">
+      <JFXButton fx:id="btnConfirmOrder" buttonType="RAISED" layoutX="905.0" layoutY="811.0" onAction="#confirmOrderOnAction" prefHeight="51.0" prefWidth="197.0" style="-fx-background-color: #2ecc71; -fx-background-radius: 6;" text="Confirm Order" textFill="WHITE">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
@@ -133,10 +133,15 @@
             <Font size="22.0" />
          </font>
       </TextField>
-      <JFXTextField fx:id="txtCash" alignment="CENTER" layoutX="558.0" layoutY="682.0" prefHeight="37.0" prefWidth="169.0">
+      <JFXTextField fx:id="txtCash" alignment="CENTER" layoutX="558.0" layoutY="682.0" onKeyReleased="#textFieldsKeyReleased" prefHeight="37.0" prefWidth="169.0">
          <font>
             <Font size="22.0" />
          </font>
       </JFXTextField>
+      <JFXButton fx:id="btnPrint" buttonType="RAISED" layoutX="1160.0" layoutY="811.0" onAction="#printOnAction" prefHeight="48.0" prefWidth="136.0" style="-fx-background-color: #176C7F; -fx-background-radius: 6;" text="Print" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

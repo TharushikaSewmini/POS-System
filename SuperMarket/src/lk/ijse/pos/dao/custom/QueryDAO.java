@@ -8,4 +8,6 @@ import java.util.ArrayList;
 
 public interface QueryDAO extends SuperDAO {
     ArrayList<CustomEntity> getItemByOrderId(String orderID) throws SQLException, ClassNotFoundException;
+
+    boolean update(CustomEntity entity) throws SQLException, ClassNotFoundException;
 }
